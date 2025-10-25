@@ -1,0 +1,12 @@
+# YOLOv8 models
+yolov8?.pt
+
+# Training outputs
+runs/
+
+# Environment directories
+env/
+venv/
+
+#temp
+output/
