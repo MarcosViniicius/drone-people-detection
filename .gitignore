@@ -1,15 +1,25 @@
 # YOLOv8 models
-yolov8?.pt
+yolo*.pt
+yolov*.pt
 
 # Training outputs
 runs/
 
 # Environment directories
-env/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 venv/
+env/
+.venv
+
 
 #temp
 output/
+input/
 
 # archives inside videos_for_processing/
 assets/videos_for_processing/*
