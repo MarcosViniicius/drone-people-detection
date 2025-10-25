@@ -10,3 +10,6 @@ venv/
 
 #temp
 output/
+
+# archives inside videos_for_processing/
+assets/videos_for_processing/*
