@@ -19,6 +19,7 @@ def setup():
 
     # Criar pasta de saída se não existir
     os.makedirs(output_directory, exist_ok=True)
+    os.makedirs(video_directory, exist_ok=True)
     output_path = os.path.join(output_directory, output_filename)
 
     return {
@@ -87,7 +88,9 @@ def processVideo(config):
     # Abrir vídeo
     video = cv2.VideoCapture(video_directory)
     if not video.isOpened():
-        print("❌ Erro ao abrir vídeo")
+        print(
+            f"❌ Erro ao abrir vídeo. Adicione arquivo .mp4 dentro da pasta {video_directory}"
+        )
         return
 
     # Obter propriedades
