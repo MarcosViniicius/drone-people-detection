@@ -23,3 +23,6 @@ input/
 
 # archives inside videos_for_processing/
 assets/videos_for_processing/*
+
+#nginx temp files
+nginx-rtmp-stream/stream/*
