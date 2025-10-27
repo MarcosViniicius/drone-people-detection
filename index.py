@@ -4,24 +4,29 @@ from ultralytics import YOLO
 import threading
 import queue
 import time
+import json
+
+with open("config.json", "r", encoding="utf-8") as archive_json:
+    # Usa json.load() para carregar o conteúdo do arquivo em uma variável
+    json_config = json.load(archive_json)
 
 
 def setup():
     """Configuração inicial do modelo e variáveis"""
     model = YOLO(
-        "yolo11m.pt"
+        json_config["model"]["weights"]
     )  # n, s, m, l, x, a partir do 11, tira o v e deixa somente yoloxx.pt
 
     # Diretórios
-    input_directory = "./assets/input/videos"
-    output_directory = "./assets/output/videos"
+    input_directory = json_config["input_directory"]
+    output_directory = json_config["output_directory"]
 
     # Criar pastas se não existirem
     os.makedirs(input_directory, exist_ok=True)
     os.makedirs(output_directory, exist_ok=True)
 
     # Buscar todos os vídeos na pasta de input
-    video_extensions = [".mp4", ".avi", ".mov", ".mkv", ".wmv", ".flv"]
+    video_extensions = json_config["video_extensions"]
     video_files = []
 
     if os.path.exists(input_directory):
@@ -72,10 +77,10 @@ def detect_people(model, frame):
     """Detecta pessoas em um frame usando YOLO"""
     results = model(
         frame,
-        conf=0.3,
-        iou=0.45,
-        classes=[0],  # 0 = pessoa
-        verbose=False,
+        conf=json_config["inference_parameters"]["conf"],
+        iou=json_config["inference_parameters"]["iou"],
+        classes=json_config["inference_parameters"]["classes"],  # 0 = pessoa
+        verbose=json_config["inference_parameters"]["verbose"],
     )
     return results[0]
 
@@ -110,8 +115,8 @@ def processVideo(config, video_path):
 
     # Obter propriedades
     fps = int(video.get(cv2.CAP_PROP_FPS))
-    width = 1280
-    height = 720
+    width = json_config["video_dimensions"]["width"]
+    height = json_config["video_dimensions"]["height"]
     total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
 
     print(f"Processando: {os.path.basename(video_path)}")
@@ -317,6 +322,7 @@ def processVideo(config, video_path):
 
 def main():
     """Função principal que processa todos os vídeos da pasta"""
+
     config = setup()
 
     if not config:
