@@ -1,28 +1,51 @@
-# YOLOv8 models
-yolo*.pt
-yolov*.pt
-
-# Training outputs
-runs/
-
-# Environment directories
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
-venv/
 env/
-.venv
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-#temp
-output/
-input/
+# Projeto específico
+data/input/*
+!data/input/.gitkeep
+data/output/*
+!data/output/.gitkeep
+logs/*.log
+!logs/.gitkeep
+models/*.pt
+!models/.gitkeep
 
-# archives inside videos_for_processing/
-assets/videos_for_processing/*
+# Sistema
+.DS_Store
+Thumbs.db
 
-#nginx temp files
-nginx-rtmp-stream/stream/*
+#YOLO MODELS
+yolo*.pt
+
+#nginx logs
+nginx-rtmp-stream/stream/

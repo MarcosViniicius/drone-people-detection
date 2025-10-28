@@ -1,13 +1,13 @@
 {
-  "input_directory": "./assets/input/videos",
-  "output_directory": "./assets/output/videos",
+  "input_directory": "./data/input/videos",
+  "output_directory": "./data/output/videos",
   "model": {
     "type": "YOLO",
     "weights": "yolo11m.pt"
   },
   "video_extensions": [".mp4", ".avi", ".mov", ".mkv", ".wmv", ".flv"],
   "inference_parameters": {
-    "conf": 0.3,
+    "conf": 0.1,
     "iou": 0.45,
     "classes": [0],
     "verbose": false
