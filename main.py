@@ -20,6 +20,41 @@ def print_header():
     print()
 
 
+def display_menu():
+    """Exibe opções de menu para o usuário e retorna a escolha"""
+    print("\nOpções de Menu:")
+    print("1. Iniciar processamento de Livestream | Não implementado")
+    print("2. Iniciar processamento de vídeos | Implementado")
+    print("3. Iniciar processamento de imagens | Não implementado")
+    print("4. Sair")
+    
+    while True:
+        choice = input("\nEscolha uma opção (1-4): ").strip()
+        if choice in ('1', '2', '3', '4'):
+            return choice
+        print("Opção inválida. Por favor, escolha uma opção válida (1-4).")
+
+
+def process_livestream(processor):
+    """Processamento de livestream"""
+    print("\nIniciando processamento de Livestream...")
+    # Implementar lógica específica para livestream
+    processor.process_livestream()
+
+
+def process_videos(processor):
+    """Processamento de vídeos"""
+    print("\nIniciando processamento de vídeos...")
+    processor.process_all()
+
+
+def process_images(processor):
+    """Processamento de imagens"""
+    print("\nIniciando processamento de imagens...")
+    # Implementar lógica específica para imagens
+    processor.process_images()
+
+
 def main():
     """Função principal da aplicação"""
     print_header()
@@ -34,16 +69,27 @@ def main():
         # Criar processador de vídeos
         processor = VideoProcessor(config)
         
-        # Processar todos os vídeos
-        processor.process_all()
-        
+        # Loop principal do menu
+        while True:
+            choice = display_menu()
+            
+            if choice == '1':
+                process_livestream(processor)
+            elif choice == '2':
+                process_videos(processor)
+            elif choice == '3':
+                process_images(processor)
+            else:  # Opção 4 (Sair)
+                print("\nSaindo da aplicação...")
+                break
+                
     except FileNotFoundError as e:
-        print(f"✗ Erro: {e}")
+        print(f"\n✗ Erro: {e}")
         print("Certifique-se de que o arquivo config.json existe.")
         sys.exit(1)
     
     except ValueError as e:
-        print(f"✗ Erro de configuração: {e}")
+        print(f"\n✗ Erro de configuração: {e}")
         sys.exit(1)
     
     except KeyboardInterrupt:
