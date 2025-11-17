@@ -10,6 +10,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from src.utils.config_loader import load_config, validate_config
 from src.processors.video_processor import VideoProcessor
+from src.processors.image_processor import ImageProcessor
 
 
 def print_header():
@@ -22,6 +23,7 @@ def print_header():
 
 def display_menu():
     """Exibe opções de menu para o usuário e retorna a escolha"""
+    print("Atualmente, apenas o processamento de pessoas está configurado, para processar outras coisas, modifique no config.json.")
     print("\nOpções de Menu:")
     print("1. Iniciar processamento de Livestream | Não implementado")
     print("2. Iniciar processamento de vídeos | Implementado")
@@ -52,7 +54,7 @@ def process_images(processor):
     """Processamento de imagens"""
     print("\nIniciando processamento de imagens...")
     # Implementar lógica específica para imagens
-    processor.process_images()
+    processor.process_all()
 
 
 def main():
@@ -67,18 +69,20 @@ def main():
         print("✓ Configurações carregadas com sucesso\n")
         
         # Criar processador de vídeos
-        processor = VideoProcessor(config)
+        video_processor = VideoProcessor(config)
+        image_processor = ImageProcessor(config)
         
         # Loop principal do menu
         while True:
             choice = display_menu()
             
             if choice == '1':
-                process_livestream(processor)
+                # process_livestream(processor)
+                print("\nProcessamento de Livestream não implementado.")
             elif choice == '2':
-                process_videos(processor)
+                process_videos(video_processor)
             elif choice == '3':
-                process_images(processor)
+                process_images(image_processor)
             else:  # Opção 4 (Sair)
                 print("\nSaindo da aplicação...")
                 break

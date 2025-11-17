@@ -1,11 +1,14 @@
 {
-  "input_directory": "./data/input/videos",
-  "output_directory": "./data/output/videos",
+  "video_input_directory": "./data/input/videos",
+  "video_output_directory": "./data/output/videos",
+  "image_input_directory": "./data/input/images",
+  "image_output_directory": "./data/output/images",
   "model": {
     "type": "YOLO",
     "weights": "yolo11m.pt"
   },
   "video_extensions": [".mp4", ".avi", ".mov", ".mkv", ".wmv", ".flv"],
+  "image_extensions": [".jpg", ".jpeg", ".png", ".bmp", ".tiff"],
   "inference_parameters": {
     "conf": 0.1,
     "iou": 0.45,
@@ -15,5 +18,10 @@
   "video_dimensions": {
     "width": 1280,
     "height": 720
+  },
+  "image_dimensions": {
+    "width": 800,
+    "height": 600
   }
+
 }

@@ -21,15 +21,15 @@ class VideoProcessor:
         """
         self.config = config
         self.detector = PeopleDetector(config["model"])
-        self.input_directory = config["input_directory"]
-        self.output_directory = config["output_directory"]
+        self.video_input_directory = config["video_input_directory"]
+        self.video_output_directory = config["video_output_directory"]
         self.video_extensions = config["video_extensions"]
         self.width = config["video_dimensions"]["width"]
         self.height = config["video_dimensions"]["height"]
         
         # Criar diretórios de saída
-        os.makedirs(os.path.join(self.output_directory, "videos"), exist_ok=True)
-        os.makedirs(os.path.join(self.output_directory, "stats"), exist_ok=True)
+        os.makedirs(os.path.join(self.video_output_directory, "videos"), exist_ok=True)
+        os.makedirs(os.path.join(self.video_output_directory, "stats"), exist_ok=True)
     
     def get_video_files(self):
         """
@@ -38,14 +38,14 @@ class VideoProcessor:
         Returns:
             list: Lista de caminhos de vídeos encontrados
         """
-        if not os.path.exists(self.input_directory):
-            os.makedirs(self.input_directory, exist_ok=True)
+        if not os.path.exists(self.video_input_directory):
+            os.makedirs(self.video_input_directory, exist_ok=True)
             return []
         
         video_files = []
-        for file in os.listdir(self.input_directory):
+        for file in os.listdir(self.video_input_directory):
             if any(file.lower().endswith(ext) for ext in self.video_extensions):
-                video_files.append(os.path.join(self.input_directory, file))
+                video_files.append(os.path.join(self.video_input_directory, file))
         
         return video_files
     
@@ -55,7 +55,7 @@ class VideoProcessor:
         
         if not video_files:
             print("Nenhum vídeo encontrado na pasta de entrada.")
-            print(f"Coloque vídeos em: {self.input_directory}")
+            print(f"Coloque vídeos em: {self.video_input_directory}")
             return
         
         print(f"\n{len(video_files)} vídeo(s) encontrado(s).\n")
@@ -100,10 +100,10 @@ class VideoProcessor:
         # Gerar caminhos de saída
         video_name = os.path.splitext(os.path.basename(video_path))[0]
         output_video_path = os.path.join(
-            self.output_directory, "videos", f"result_{video_name}_annotated.mp4"
+            self.video_output_directory, "videos", f"result_{video_name}_annotated.mp4"
         )
         output_stats_path = os.path.join(
-            self.output_directory, "stats", f"stats_{video_name}.txt"
+            self.video_output_directory, "stats", f"stats_{video_name}.txt"
         )
         
         # Inicializar gerenciadores

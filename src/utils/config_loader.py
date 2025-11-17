@@ -41,7 +41,7 @@ def validate_config(config):
     Raises:
         ValueError: Se configuração obrigatória estiver faltando
     """
-    required_keys = ["model", "input_directory", "output_directory", "video_extensions"]
+    required_keys = ["model", "video_input_directory", "video_output_directory", "video_extensions", "image_input_directory", "image_output_directory"]
     
     for key in required_keys:
         if key not in config:
