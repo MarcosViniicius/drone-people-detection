@@ -1,11 +1,11 @@
 """
-Sistema de Detecção de Pessoas usando YOLO
-Ponto de entrada principal da aplicação
+People Detection System using YOLO
+Main application entry point
 """
 import sys
 import os
 
-# Adicionar src ao path
+# Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 from src.utils.config_loader import load_config, validate_config
@@ -14,7 +14,7 @@ from src.processors.image_processor import ImageProcessor
 
 
 def print_header():
-    """Imprime cabeçalho da aplicação"""
+    """Print application header"""
     print("=" * 60)
     print("SISTEMA DE DETECÇÃO DE PESSOAS - YOLO")
     print("=" * 60)
@@ -22,7 +22,7 @@ def print_header():
 
 
 def display_menu():
-    """Exibe opções de menu para o usuário e retorna a escolha"""
+    """Display menu options for the user and return the choice"""
     print("Atualmente, apenas o processamento de pessoas está configurado, para processar outras coisas, modifique no config.json.")
     print("\nOpções de Menu:")
     print("1. Iniciar processamento de Livestream | Não implementado")
@@ -31,77 +31,77 @@ def display_menu():
     print("4. Sair")
     
     while True:
-        choice = input("\nEscolha uma opção (1-4): ").strip()
+        choice = input("\nChoose an option (1-4): ").strip()
         if choice in ('1', '2', '3', '4'):
             return choice
-        print("Opção inválida. Por favor, escolha uma opção válida (1-4).")
+        print("Invalid option. Please choose a valid option (1-4).")
 
 
 def process_livestream(processor):
-    """Processamento de livestream"""
-    print("\nIniciando processamento de Livestream...")
-    # Implementar lógica específica para livestream
+    """Livestream processing"""
+    print("\nStarting Livestream processing...")
+    # Implement livestream specific logic
     processor.process_livestream()
 
 
 def process_videos(processor):
-    """Processamento de vídeos"""
-    print("\nIniciando processamento de vídeos...")
+    """Video processing"""
+    print("\nStarting video processing...")
     processor.process_all()
 
 
 def process_images(processor):
-    """Processamento de imagens"""
-    print("\nIniciando processamento de imagens...")
-    # Implementar lógica específica para imagens
+    """Image processing"""
+    print("\nStarting image processing...")
+    # Implement image specific logic
     processor.process_all()
 
 
 def main():
-    """Função principal da aplicação"""
+    """Main application function"""
     print_header()
     
     try:
-        # Carregar configurações
-        print("Carregando configurações...")
+        # Load configurations
+        print("Loading configurations...")
         config = load_config("./configs/config.json")
         validate_config(config)
-        print("✓ Configurações carregadas com sucesso\n")
+        print("✓ Configurations loaded successfully\n")
         
-        # Criar processador de vídeos
+        # Create video processor
         video_processor = VideoProcessor(config)
         image_processor = ImageProcessor(config)
         
-        # Loop principal do menu
+        # Main menu loop
         while True:
             choice = display_menu()
             
             if choice == '1':
                 # process_livestream(processor)
-                print("\nProcessamento de Livestream não implementado.")
+                print("\nLivestream processing not implemented.")
             elif choice == '2':
                 process_videos(video_processor)
             elif choice == '3':
                 process_images(image_processor)
-            else:  # Opção 4 (Sair)
-                print("\nSaindo da aplicação...")
+            else:  # Option 4 (Exit)
+                print("\nExiting application...")
                 break
                 
     except FileNotFoundError as e:
-        print(f"\n✗ Erro: {e}")
-        print("Certifique-se de que o arquivo config.json existe.")
+        print(f"\n✗ Error: {e}")
+        print("Make sure the config.json file exists.")
         sys.exit(1)
     
     except ValueError as e:
-        print(f"\n✗ Erro de configuração: {e}")
+        print(f"\n✗ Configuration error: {e}")
         sys.exit(1)
     
     except KeyboardInterrupt:
-        print("\n\nProcessamento interrompido pelo usuário.")
+        print("\n\nProcessing interrupted by user.")
         sys.exit(0)
     
     except Exception as e:
-        print(f"\n✗ Erro inesperado: {e}")
+        print(f"\n✗ Unexpected error: {e}")
         import traceback
         traceback.print_exc()
         sys.exit(1)

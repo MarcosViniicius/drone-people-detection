@@ -1,34 +1,34 @@
 """
-Módulo de detecção de pessoas usando YOLO
+People detection module using YOLO
 """
 from ultralytics import YOLO
 
 
 class PeopleDetector:
-    """Classe responsável pela detecção de pessoas usando YOLO"""
+    """Class responsible for people detection using YOLO"""
     
     def __init__(self, model_config):
         """
-        Inicializa o detector YOLO
+        Initialize YOLO detector
         
         Args:
-            model_config (dict): Configurações do modelo
+            model_config (dict): Model configurations
         """
         self.model = YOLO(model_config["weights"])
         self.conf = model_config.get("conf", 0.25)
         self.iou = model_config.get("iou", 0.7)
-        self.classes = model_config.get("classes", [0])  # 0 = pessoa
+        self.classes = model_config.get("classes", [0])  # 0 = person
         self.verbose = model_config.get("verbose", False)
     
     def detect(self, frame):
         """
-        Detecta pessoas em um frame
+        Detect people in a frame
         
         Args:
-            frame: Frame de vídeo (numpy array)
+            frame: Video frame (numpy array)
             
         Returns:
-            Resultado da detecção YOLO
+            YOLO detection result
         """
         results = self.model(
             frame,
@@ -41,12 +41,12 @@ class PeopleDetector:
     
     def count_people(self, results):
         """
-        Conta o número de pessoas detectadas
+        Count the number of detected people
         
         Args:
-            results: Resultado da detecção YOLO
+            results: YOLO detection result
             
         Returns:
-            int: Número de pessoas detectadas
+            int: Number of detected people
         """
         return len(results.boxes)

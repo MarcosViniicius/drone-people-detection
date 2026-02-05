@@ -1,5 +1,5 @@
 """
-Módulo para gerenciar escrita de vídeos
+Module to manage video writing
 """
 import cv2
 import threading
@@ -7,43 +7,43 @@ import queue
 
 
 class VideoWriterManager:
-    """Gerenciador de escrita de vídeos com threading"""
+    """Video writing manager with threading"""
     
     def __init__(self, output_path, fps, width, height, codec="mp4v"):
         """
-        Inicializa o gerenciador de escrita de vídeo
+        Initialize the video writing manager
         
         Args:
-            output_path (str): Caminho do arquivo de saída
-            fps (int): Frames por segundo
-            width (int): Largura do vídeo
-            height (int): Altura do vídeo
-            codec (str): Codec do vídeo
+            output_path (str): Output file path
+            fps (int): Frames per second
+            width (int): Video width
+            height (int): Video height
+            codec (str): Video codec
         """
         self.output_path = output_path
         self.fps = fps
         self.width = width
         self.height = height
         
-        # Criar VideoWriter
+        # Create VideoWriter
         fourcc = cv2.VideoWriter_fourcc(*codec)
         self.out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
         
         if not self.out.isOpened():
-            raise RuntimeError(f"Erro ao criar vídeo de saída: {output_path}")
+            raise RuntimeError(f"Error creating output video: {output_path}")
         
-        # Configurar fila e thread de escrita
+        # Configure queue and writing thread
         self.write_queue = queue.Queue(maxsize=30)
         self.writer_thread = threading.Thread(target=self._writer_worker)
         self.writer_thread.start()
         self.is_writing = True
     
     def _writer_worker(self):
-        """Worker thread para escrever frames"""
+        """Worker thread to write frames"""
         while True:
             item = self.write_queue.get()
             
-            if item is None:  # Sinal de parada
+            if item is None:  # Stop signal
                 break
             
             self.out.write(item)
@@ -51,22 +51,22 @@ class VideoWriterManager:
     
     def write(self, frame):
         """
-        Adiciona frame à fila de escrita
+        Add frame to writing queue
         
         Args:
-            frame: Frame a ser escrito
+            frame: Frame to be written
         """
         if self.is_writing:
             self.write_queue.put(frame)
     
     def release(self):
-        """Finaliza a escrita e libera recursos"""
-        # Sinalizar fim para thread
+        """Finalize writing and release resources"""
+        # Signal end to thread
         self.write_queue.put(None)
         
-        # Esperar thread terminar
+        # Wait for thread to finish
         self.writer_thread.join()
         
-        # Liberar VideoWriter
+        # Release VideoWriter
         self.out.release()
         self.is_writing = False
