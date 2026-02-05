@@ -26,8 +26,8 @@ def display_menu():
     print("Atualmente, apenas o processamento de pessoas está configurado, para processar outras coisas, modifique no config.json.")
     print("\nOpções de Menu:")
     print("1. Iniciar processamento de Livestream | Não implementado")
-    print("2. Iniciar processamento de vídeos | Implementado")
-    print("3. Iniciar processamento de imagens | Não implementado")
+    print("2. Iniciar processamento de vídeos | configurar tipo de detecção no config.json")
+    print("3. Iniciar processamento de imagens | configurar tipo de detecção no config.json")
     print("4. Sair")
     
     while True:

@@ -30,7 +30,7 @@ def draw_detections(frame, results, people_count, max_people=0, elapsed_time=0.0
         cv2.rectangle(annotated_frame, (x1, y1), (x2, y2), (0, 128, 0), 2)
         
         # Criar label
-        label = f"Person {confidence:.2f}"
+        label = f"D {confidence:.2f}"
         
         # Calcular tamanho do texto
         font = cv2.FONT_HERSHEY_SIMPLEX
@@ -78,15 +78,15 @@ def draw_info_overlay(frame, people_count, max_people=0, elapsed_time=0.0):
         elapsed_time (float): Tempo decorrido
     """
     # Contador de pessoas (vermelho)
-    cv2.putText(frame, f"Pessoas: {people_count}",
+    cv2.putText(frame, f"Detected: {people_count}",
                (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 255), 2)
     
     # Tempo decorrido (verde)
     if elapsed_time > 0:
-        cv2.putText(frame, f"Tempo: {elapsed_time:.1f}s",
+        cv2.putText(frame, f"Time: {elapsed_time:.1f}s",
                    (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     
     # Máximo de pessoas (magenta)
     if max_people > 0:
-        cv2.putText(frame, f"Maximo: {max_people}",
+        cv2.putText(frame, f"Max detection: {max_people}",
                    (10, 130), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)

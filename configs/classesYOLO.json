@@ -1,6 +1,6 @@
-ALL CLASSES FOR YOLO MODELS
-
-
+{
+  "description": "ALL CLASSES FOR YOLO MODELS",
+  "classes": {
     "0": "person",
     "1": "bicycle",
     "2": "car",
@@ -51,7 +51,7 @@ ALL CLASSES FOR YOLO MODELS
     "47": "apple",
     "48": "sandwich",
     "49": "orange",
-    "50": "brocolli",
+    "50": "broccoli",
     "51": "carrot",
     "52": "hot dog",
     "53": "pizza",
@@ -81,3 +81,5 @@ ALL CLASSES FOR YOLO MODELS
     "77": "teddy bear",
     "78": "hair drier",
     "79": "toothbrush"
+  }
+}
