@@ -11,24 +11,25 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 from src.utils.config_loader import load_config, validate_config
 from src.processors.video_processor import VideoProcessor
 from src.processors.image_processor import ImageProcessor
+from src.processors.stream_processor import StreamProcessor
 
 
 def print_header():
     """Print application header"""
     print("=" * 60)
-    print("SISTEMA DE DETECÇÃO DE PESSOAS - YOLO")
+    print("PEOPLE DETECTION SYSTEM - YOLO")
     print("=" * 60)
     print()
 
 
 def display_menu():
     """Display menu options for the user and return the choice"""
-    print("Atualmente, apenas o processamento de pessoas está configurado, para processar outras coisas, modifique no config.json.")
-    print("\nOpções de Menu:")
-    print("1. Iniciar processamento de Livestream | Não implementado")
-    print("2. Iniciar processamento de vídeos | configurar tipo de detecção no config.json")
-    print("3. Iniciar processamento de imagens | configurar tipo de detecção no config.json")
-    print("4. Sair")
+    print("Currently, only people detection is configured. To process other things, modify config.json.")
+    print("\nMenu Options:")
+    print("1. Start Livestream processing")
+    print("2. Start video processing | configure detection type in config.json")
+    print("3. Start image processing | configure detection type in config.json")
+    print("4. Exit")
     
     while True:
         choice = input("\nChoose an option (1-4): ").strip()
@@ -40,8 +41,7 @@ def display_menu():
 def process_livestream(processor):
     """Livestream processing"""
     print("\nStarting Livestream processing...")
-    # Implement livestream specific logic
-    processor.process_livestream()
+    processor.start_processing()
 
 
 def process_videos(processor):
@@ -68,17 +68,17 @@ def main():
         validate_config(config)
         print("✓ Configurations loaded successfully\n")
         
-        # Create video processor
+        # Create processors
         video_processor = VideoProcessor(config)
         image_processor = ImageProcessor(config)
+        stream_processor = StreamProcessor(config)
         
         # Main menu loop
         while True:
             choice = display_menu()
             
             if choice == '1':
-                # process_livestream(processor)
-                print("\nLivestream processing not implemented.")
+                process_livestream(stream_processor)
             elif choice == '2':
                 process_videos(video_processor)
             elif choice == '3':

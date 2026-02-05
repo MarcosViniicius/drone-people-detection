@@ -36,7 +36,9 @@ docker compose logs nginx
 Use um dispositivo ou software de streaming (ex: OBS) para enviar vídeo para:
 
 ```
-rtmp://localhost:1935/live
+rtmp://localhost:1935/live 
+ou, se transmitindo de outro dispositivo:
+rtmp://ipdamaquina:1935/live
 ```
 
 ---
@@ -46,7 +48,9 @@ rtmp://localhost:1935/live
 Abra no navegador ou em players como VLC:
 
 ```
-http://localhost:8081/live/.m3u8
+http://localhost:8081/live/.m3u8 
+ou, se visualizando de outro dispositivo:
+http://ipdamaquina:8081/live/.m3u8 
 ```
 
 ---

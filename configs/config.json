@@ -22,6 +22,18 @@
   "image_dimensions": {
     "width": 800,
     "height": 600
+  },
+  "stream": {
+    "local_rtmp_url": "http://localhost:8081/live/.m3u8",
+    "local_hls_url": "http://localhost:8081/live/.m3u8",
+    "hls_stream_directory": "./nginx-rtmp-stream/stream",
+    "output_directory": "./data/output/videos/lives",
+    "recording_directory": "./data/output/videos/live_recordings",
+    "stats_directory": "./data/output/videos/stats",
+    "dimensions": {
+      "width": 1280,
+      "height": 720
+    }
   }
 
 }

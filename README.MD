@@ -16,6 +16,9 @@ Sistema automatizado para detectar pessoas em vídeos e imagens usando YOLOv11, 
 ## ✨ Características
 
 - Detecção de pessoas em vídeos e imagens
+- **Processamento de livestreams em tempo real**
+- **Suporte para streams RTMP e HLS**
+- **Gravação opcional de streams processados**
 - Geração de estatísticas detalhadas
 - Anotações visuais com contadores
 - Processamento em lote
@@ -46,15 +49,19 @@ pip install -r requirements.txt
 drone-people-detection/
 ├── configs/
 │   └── config.json          # Arquivo de configuração
-├── data/
+┌── data/
 │   ├── input/
 │   │   ├── videos/         # Coloque vídeos aqui
 │   │   └── images/         # Coloque imagens aqui
 │   └── output/
 │       ├── videos/         # Vídeos processados
 │       │   ├── videos/     # Vídeos anotados
+│       │   ├── lives/      # Streams processados
+│       │   ├── live_recordings/  # Gravações de streams
 │       │   └── stats/      # Estatísticas dos vídeos
 │       └── images/         # Imagens processadas
+├── nginx-rtmp-stream/       # Servidor RTMP/HLS local
+│   └── stream/             # HLS streams gerados pelo nginx (não editar)
 ├── src/
 │   ├── core/
 │   ├── processors/
@@ -93,6 +100,17 @@ O arquivo [`configs/config.json`](configs/config.json) controla todos os parâme
   "image_dimensions": {
     "width": 800,
     "height": 600
+  },
+  "stream": {
+    "local_rtmp_url": "rtmp://localhost:1935/live",
+    "local_hls_url": "http://localhost:8081/live/.m3u8",
+    "output_directory": "./data/output/videos/lives",
+    "recording_directory": "./data/output/videos/live_recordings",
+    "stats_directory": "./data/output/videos/stats",
+    "dimensions": {
+      "width": 1280,
+      "height": 720
+    }
   }
 }
 ```
@@ -285,7 +303,83 @@ Detectar pessoas, veículos e animais.
 }
 ```
 
-## 🚀 Como Usar
+## � Processamento de Livestreams
+
+O sistema suporta processamento de vídeo em tempo real de streams ao vivo.
+
+### Configuração de Stream
+
+```json
+"stream": {
+  "local_rtmp_url": "rtmp://localhost:1935/live",
+  "local_hls_url": "http://localhost:8081/live/.m3u8",
+  "hls_stream_directory": "./nginx-rtmp-stream/stream",
+  "output_directory": "./data/output/videos/lives",
+  "recording_directory": "./data/output/videos/live_recordings",
+  "stats_directory": "./data/output/videos/stats",
+  "dimensions": {
+    "width": 1280,
+    "height": 720
+  }
+}
+```
+
+**Importante:**
+- `hls_stream_directory`: Diretório onde o servidor nginx-rtmp gera os arquivos HLS (.m3u8 e .ts)
+- Esta pasta é gerenciada automaticamente pelo nginx e não deve ser editada manualmente
+- Os streams processados e gravados são salvos em `recording_directory`
+
+### Tipos de Stream Suportados
+
+#### 1️⃣ Stream Interno (RTMP/HLS Local)
+
+Utilize o servidor NGINX-RTMP incluído no projeto:
+
+**Iniciar o servidor:**
+```bash
+cd nginx-rtmp-stream
+docker compose up -d
+```
+
+**Transmitir para o servidor:**
+- URL RTMP: `rtmp://localhost:1935/live`
+- Use software como OBS Studio para transmitir
+
+**Assistir o stream:**
+- URL HLS: `http://localhost:8081/live/.m3u8`
+
+#### 2️⃣ Stream Externo
+
+Suporte para streams de qualquer fonte:
+- **RTMP:** `rtmp://example.com/live/stream`
+- **HLS:** `http://example.com/stream.m3u8`
+- **HTTP:** `http://example.com/video.mp4`
+
+### Recursos do Processamento de Stream
+
+- ✅ Detecção em tempo real
+- ✅ Visualização ao vivo com anotações
+- ✅ Gravação opcional do stream processado
+- ✅ Estatísticas em tempo real
+- ✅ Controles interativos:
+  - `Q` - Parar processamento
+  - `S` - Alternar exibição de estatísticas
+
+### Como Usar Livestreams
+
+1. **No menu principal**, selecione opção `1` (Livestream processing)
+2. **Escolha a fonte:**
+   - Opção 1: Stream interno (RTMP/HLS local)
+   - Opção 2: Stream externo (URL customizada)
+3. **Decida se quer gravar** o stream processado
+4. **Acompanhe o processamento** em tempo real
+5. **Pressione Q** para finalizar
+**⚠️ Importante para HLS interno:**
+- Você precisa estar **transmitindo ativamente** para o servidor RTMP
+- Use OBS Studio ou similar para transmitir para `rtmp://localhost:1935/live`
+- Aguarde 5-10 segundos após iniciar a transmissão antes de processar HLS
+- Ou use RTMP diretamente (sem espera necessária)
+## �🚀 Como Usar
 
 ### 1. Preparar Arquivos
 
@@ -311,6 +405,10 @@ python main.py
 
 **Imagens processadas:**
 - Imagens anotadas: `./data/output/images/`
+
+**Livestreams:**
+- Gravações: `./data/output/videos/live_recordings/`
+- Estatísticas: `./data/output/videos/stats/`
 
 ## 📊 Estatísticas Geradas
 
@@ -357,6 +455,25 @@ FPS de processamento: 33.1
 ### Processamento impreciso
 - Use um modelo mais pesado (`yolo11l.pt` ou `yolo11x.pt`)
 - Aumente as dimensões de processamento
+
+### Stream não conecta (interno)
+- Verifique se o servidor NGINX-RTMP está rodando: `docker compose ps`
+- Reinicie o servidor: `cd nginx-rtmp-stream && docker compose restart`
+- **IMPORTANTE**: Certifique-se de que você está **transmitindo ativamente** (OBS deve mostrar "Live")
+- Para HLS: Aguarde 5-10 segundos após iniciar a transmissão para os arquivos serem gerados
+- Verifique se arquivos HLS existem: `nginx-rtmp-stream/stream/live/index.m3u8`
+- Se não houver transmissão ativa, o HLS não funcionará!
+
+### Stream não conecta (externo)
+- Verifique se a URL está correta
+- Teste a URL em um player de vídeo (VLC, etc.)
+- Verifique sua conexão de internet
+- Alguns streams podem ter restrições geográficas
+
+### Lag ou atraso no processamento de stream
+- Reduza as dimensões de processamento em `stream.dimensions`
+- Use um modelo mais leve (yolo11n.pt ou yolo11s.pt)
+- Feche outros programas que consomem recursos
 
 ## 📝 Licença
 
